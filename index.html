@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Смачно & Просто - Світ Кулінарної Магії</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,400&family=Oswald:wght@600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- 1. NAVIGATION HEADER -->
+    <header class="header">
+        <a href="#home" class="logo">
+            <span>СМАЧНО & ПРОСТО</span>
+            <span class="logo-sub">КУЛІНАРНИЙ КЛУБ</span>
+        </a>
+
+        <nav class="nav" id="navMenu">
+            <a href="#home">ГОЛОВНА</a>
+            <a href="#recipes">РЕЦЕПТИ</a>
+            <a href="#categories">КАТЕГОРІЇ</a>
+            <a href="#timer-section">ТАЙМЕР</a>
+            <a href="#tip-of-day">ПОРАДИ</a>
+        </nav>
+
+        <div class="header-actions">
+            <button onclick="toggleFavoritesFilter()" id="favToggleBtn" class="header-link fav-btn">
+                <i class="fa-solid fa-heart"></i>
+                <span>УЛЮБЛЕНІ</span>
+                <span id="favCounter" class="fav-badge">0</span>
+            </button>
+
+            <button id="mobileMenuBtn" class="menu-toggle" aria-label="Меню">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- 2. HERO SECTION -->
+        <section id="home" class="hero">
+            <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&w=1400&q=80" alt="Кулінарна магія" class="hero-image">
+            <div class="hero-shade"></div>
+
+            <div class="hero-content">
+                <p class="eyebrow"><i class="fa-solid fa-fire"></i> БІЛЬШЕ 500+ АВТОРСЬКИХ РЕЦЕПТІВ</p>
+                <h1>СВІТ СМАКУ</h1>
+                <p class="hero-script">та кулінарної магії</p>
+                <p class="hero-desc">
+                    Прості та вишукані страви для щоденного меню і святкового столу. Розраховуйте порції, використовуйте зручний таймер та готуйте із задоволенням!
+                </p>
+
+                <div class="hero-search">
+                    <div class="search-box">
+                        <span><i class="fa-solid fa-bowl-rice"></i></span>
+                        <input type="text" id="heroSearchInput" placeholder="Наприклад: Борщ, Паста, Пампушки...">
+                    </div>
+                    <button onclick="triggerHeroSearch()" class="button button-light">
+                        ШУКАТИ <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+
+            <span class="hero-note">СМАЧНО &bull; ПРОСТО &bull; ДОМАШНЬО</span>
+        </section>
+
+        <!-- 3. INTRO & CATEGORY FILTERS -->
+        <section id="categories" class="section">
+            <div class="intro">
+                <div>
+                    <p class="eyebrow">КАТАЛОГ СТРАВ</p>
+                    <h2>ОБИРАЙТЕ ЗА <em>категорією</em></h2>
+                </div>
+                <p class="intro-copy">
+                    Від швидких ранкових сніданків до вишуканих десертів — знайдіть ідеальний рецепт під ваш настрій та наявні інгредієнти.
+                </p>
+            </div>
+
+            <div class="toolbar">
+                <div class="search-box">
+                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="text" id="headerSearchInput" onkeyup="handleSearch(event)" placeholder="Пошук інгредієнтів чи рецептів...">
+                </div>
+
+                <div class="filters" id="categoryPillsContainer">
+                    <button onclick="filterCategory('all', this)" class="filter active">Всі страви</button>
+                    <button onclick="filterCategory('breakfast', this)" class="filter">Сніданки</button>
+                    <button onclick="filterCategory('main', this)" class="filter">Основні страви</button>
+                    <button onclick="filterCategory('soup', this)" class="filter">Супи</button>
+                    <button onclick="filterCategory('dessert', this)" class="filter">Десерти</button>
+                    <button onclick="filterCategory('vegan', this)" class="filter">Веганські</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 4. RECIPES GRID SECTION -->
+        <section id="recipes" class="section recipes-section">
+            <div class="section-heading">
+                <h2>ПОПУЛЯРНІ РЕЦЕПТИ</h2>
+                <span id="recipeCount" class="recipe-count">Показано: 6 страв</span>
+            </div>
+
+            <div id="recipeGrid" class="recipes-grid">
+                <!-- Recipe Cards Inject Here Dynamically -->
+            </div>
+
+            <!-- Empty State -->
+            <div id="noResults" class="no-results hidden">
+                <i class="fa-solid fa-kitchen-set empty-icon"></i>
+                <h3>Страви не знайдено</h3>
+                <p>Спробуйте змінити пошуковий запит або обрати іншу категорію.</p>
+            </div>
+        </section>
+
+        <!-- 5. COOKING TIMER & RECIPE SUBMIT TOOL -->
+        <section id="timer-section" class="section tools-grid">
+            <!-- Interactive Cooking Timer Tool -->
+            <div class="tool-card">
+                <div>
+                    <div class="tool-header">
+                        <span class="eyebrow">КУХОННИЙ ПОМІЧНИК</span>
+                        <i class="fa-solid fa-stopwatch"></i>
+                    </div>
+                    <h3>ТАЙМЕР ПРИГОТУВАННЯ</h3>
+                    <p class="tool-desc">Встановіть час для варіння, запікання чи настоювання ваших страв.</p>
+
+                    <div class="timer-display-box">
+                        <span id="timerDisplay">05:00</span>
+                    </div>
+
+                    <div class="timer-presets">
+                        <button onclick="setTimerPreset(3)" class="filter">3 хв</button>
+                        <button onclick="setTimerPreset(5)" class="filter">5 хв</button>
+                        <button onclick="setTimerPreset(10)" class="filter">10 хв</button>
+                        <button onclick="setTimerPreset(15)" class="filter">15 хв</button>
+                    </div>
+                </div>
+
+                <div class="timer-controls">
+                    <button id="startTimerBtn" onclick="toggleTimer()" class="button button-primary">
+                        <i class="fa-solid fa-play"></i> СТАРТ
+                    </button>
+                    <button onclick="resetTimer()" class="button button-secondary">
+                        СКИДАННЯ
+                    </button>
+                </div>
+            </div>
+
+            <!-- Submit Recipe Form -->
+            <div class="tool-card">
+                <div>
+                    <div class="tool-header">
+                        <span class="eyebrow">СПІЛЬНОТА</span>
+                        <i class="fa-solid fa-book-bookmark"></i>
+                    </div>
+                    <h3>ПОДІЛІТЬСЯ ВЛАСНИМ РЕЦЕПТОМ</h3>
+                    <p class="tool-desc">Маєте фірмовий сімейний рецепт? Надішліть його нам, і ми опублікуємо його з вашим авторством.</p>
+
+                    <form id="recipeSubmitForm" onsubmit="handleRecipeSubmit(event)" class="submit-form">
+                        <input id="newRecipeTitle" type="text" placeholder="Назва страви" required maxlength="70" class="form-input">
+                        <div class="form-row">
+                            <select id="newRecipeCategory" class="form-input" required>
+                                <option value="main">Основні страви</option>
+                                <option value="breakfast">Сніданки</option>
+                                <option value="soup">Супи</option>
+                                <option value="dessert">Десерти</option>
+                                <option value="vegan">Веганські</option>
+                            </select>
+                            <input id="newRecipePrep" type="text" placeholder="Підготовка (напр. 10 хв)" required maxlength="30" class="form-input">
+                        </div>
+                        <div class="form-row">
+                            <input id="newRecipeCook" type="text" placeholder="Час готування (напр. 25 хв)" required maxlength="30" class="form-input">
+                            <select id="newRecipeDifficulty" class="form-input">
+                                <option value="Легко">Легко</option>
+                                <option value="Середньо">Середньо</option>
+                                <option value="Складно">Складно</option>
+                            </select>
+                        </div>
+                        <input id="newRecipeCalories" type="text" placeholder="Калорійність (наприклад, 350 ккал)" class="form-input" maxlength="30">
+                        <input id="newRecipeImage" type="url" placeholder="Посилання на фото (необов'язково)" class="form-input">
+                        <textarea id="newRecipeDescription" placeholder="Короткий опис страви" rows="2" required maxlength="220" class="form-input"></textarea>
+                        <label class="form-hint" for="newRecipeIngredients">Інгредієнти — кожен з нового рядка у форматі: Назва — кількість — одиниця</label>
+                        <textarea id="newRecipeIngredients" placeholder="Борошно — 200 — г&#10;Яйця — 2 — шт&#10;Молоко — 150 — мл" rows="4" required class="form-input"></textarea>
+                        <label class="form-hint" for="newRecipeInstructions">Кроки приготування — кожен крок з нового рядка</label>
+                        <textarea id="newRecipeInstructions" placeholder="Змішайте сухі інгредієнти.&#10;Додайте яйця та молоко.&#10;Приготуйте до готовності." rows="4" required class="form-input"></textarea>
+                        <button type="submit" class="button button-primary full-width">
+                            <i class="fa-solid fa-plus"></i> ДОДАТИ РЕЦЕПТ
+                        </button>
+                        <p class="form-hint">Рецепт одразу з'явиться в каталозі та збережеться у цьому браузері.</p>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- 6. DAILY CULINARY TIP SECTION -->
+        <section id="tip-of-day" class="section">
+            <div class="quote-banner">
+                <div>
+                    <p class="eyebrow"><i class="fa-solid fa-lightbulb"></i> ПОРАДА ВІД ШЕФА ДНЯ</p>
+                    <h2 id="tipTitle">Як зберегти <em>соковитість</em> м'яса при обсмажуванні?</h2>
+                    <p id="tipText">
+                        Завжди давайте м'ясу «відпочити» при кімнатній температурі 15–20 хвилин перед смаженням. Соліть стейк безпосередньо перед викладанням на розпечену сковороду, а після обсмажування залиште на дошці на 5 хвилин.
+                    </p>
+                    <button onclick="getRandomTip()" class="button button-light">
+                        <i class="fa-solid fa-rotate"></i> ІНША ПОРАДА
+                    </button>
+                </div>
+                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?auto=format&fit=crop&w=800&q=80" alt="Порада шефа">
+            </div>
+        </section>
+    </main>
+
+    <!-- 7. FOOTER -->
+    <footer class="footer">
+        <a href="#home" class="logo">СМАЧНО & ПРОСТО</a>
+        <p>Ваш надійний кулінарний путівник у світі смачних та простих рецептів для усієї родини.</p>
+
+        <form onsubmit="handleSubscribe(event)" class="newsletter-form">
+            <input type="email" placeholder="Ваш Email для тижневої розсилки..." required>
+            <button type="submit" class="button button-light">ПІДПИСАТИСЯ</button>
+        </form>
+
+        <div class="footer-socials">
+            <a href="#" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" aria-label="Facebook"><i class="fa-brands fa-facebook"></i></a>
+            <a href="#" aria-label="YouTube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="#" aria-label="Telegram"><i class="fa-brands fa-telegram"></i></a>
+        </div>
+
+        <small>© 2026 Смачно & Просто. Усі права захищено.</small>
+    </footer>
+
+    <!-- 8. INTERACTIVE RECIPE MODAL -->
+    <div id="modalBackdrop" class="modal-backdrop" onclick="closeModal()"></div>
+    <div id="recipeModal" class="recipe-modal">
+        <button onclick="closeModal()" class="modal-close" aria-label="Закрити">&times;</button>
+        <img id="modalImage" src="" alt="Recipe Detail" class="modal-image">
+        
+        <div class="modal-header-info">
+            <span id="modalCategory" class="category-tag modal-tag">Категорія</span>
+            <h2 id="modalTitle" class="modal-title">Назва рецепту</h2>
+        </div>
+
+        <div class="modal-badges">
+            <div><span>Підготовка:</span> <strong id="modalPrepTime">15 хв</strong></div>
+            <div><span>Готування:</span> <strong id="modalCookTime">30 хв</strong></div>
+            <div><span>Складність:</span> <strong id="modalDifficulty">Легко</strong></div>
+            <div><span>Калорійність:</span> <strong id="modalCalories">450 ккал</strong></div>
+        </div>
+
+        <!-- Portion Calculator -->
+        <div class="servings-box">
+            <div>
+                <strong>Калькулятор порцій</strong>
+                <small>Кількість інгредієнтів зміниться автоматично</small>
+            </div>
+            <div class="servings-controls">
+                <button onclick="updateServings(-1)">-</button>
+                <span id="modalServingsCount">2</span>
+                <button onclick="updateServings(1)">+</button>
+            </div>
+        </div>
+
+        <div class="modal-columns">
+            <div>
+                <h3>Інгредієнти</h3>
+                <ul id="modalIngredientsList"></ul>
+            </div>
+            <div>
+                <h3>Покрокове приготування</h3>
+                <ol id="modalInstructionsList"></ol>
+            </div>
+        </div>
+    </div>
+
+    
+
+    <script src="script.js"></script>
+</body>
+</html>
